@@ -4,13 +4,14 @@ import { cookies } from "next/headers";
 import { parseHeadersSetCookie } from "./app/lib/parseHeadersSetCookie";
 
 export async function middleware(request: NextRequest) {
+  console.log("in middleware request", request);
   const cookieStore = await cookies();
   let isAuthorized;
 
   // проверяем жизнеспособность access-token
   try {
     const isAuthorizedResponce = await isAuthorizedRequest(request.headers);
-
+console.log("isAuthorizedResponce", isAuthorizedResponce);
     if (isAuthorizedResponce.success) {
       isAuthorized = true;
     }
@@ -22,6 +23,8 @@ export async function middleware(request: NextRequest) {
         const { result, headersSetCookie } = await refreshTokenRequest(
           request.headers
         );
+        console.log("request.headers", request.headers.get('cookie'));
+        console.log("result", result);
         const refreshTokenResultSuccess = result.success && headersSetCookie;
         if (refreshTokenResultSuccess) {
           const {
@@ -70,5 +73,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/todos", "/aims"],
+  matcher: ["/todos", "/aims", "/events", "/planning", "/main"],
 };
