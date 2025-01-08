@@ -1,9 +1,12 @@
 
 'use client'
-import React, { useState } from 'react'
-import { loginRequest } from '../../api/requests';
+import React, { useEffect, useState } from 'react'
+import { isAuthorizedRequest, loginRequest } from '../../../api/requests';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function login() {
+    const router = useRouter();
 
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -25,11 +28,12 @@ export default function login() {
             if (requestResult.error) {
                 throw new Error(requestResult.error.message);
             }
-            window.sessionStorage.setItem('token', requestResult.data.token);
-        } catch(error) {
+            if (requestResult.success) {
+                router.push('/todos');
+            }
+        } catch (error) {
             console.error(error);
-}
-        
+        }
     }
 
     return (
@@ -43,10 +47,12 @@ export default function login() {
                 </label>
                 <label htmlFor="password">
                     Пароль:
-                    <input autoComplete="new-password" aria-autocomplete="list"  onChange={(event) => handleSetState(event, 'password')} id="password" type="password" value={password} />
+                    <input autoComplete="new-password" aria-autocomplete="list" onChange={(event) => handleSetState(event, 'password')} id="password" type="password" value={password} />
                 </label>
 
                 <button type="submit">Войти</button>
+
+                <Link href='/todos'> My Tasks</Link>
             </form>
         </div>
     )
