@@ -1,0 +1,15 @@
+.form-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.label{
+    min-width: 100px;
+    font-weight: 600;
+}

@@ -5,6 +5,8 @@ import styles from "./layout.module.css";
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
+import { logoutRequest } from "../../api/requests";
+import { useRouter } from "next/navigation";
 const { Header, Content, Sider } = Layout;
 
 export default function RootLayout({
@@ -12,6 +14,7 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const router = useRouter();
 
     // const onClick: MenuProps['onClick'] = () => {
     //     console.log('click ');
@@ -21,6 +24,20 @@ export default function RootLayout({
     //     key,
     //     label: <Link href='/aims'>{key}</Link>
     // }));
+
+    const onLogout = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        try {
+            const responseResult = await logoutRequest();
+            if (responseResult.success) {
+                router.push('/login');
+            } else {
+                throw new Error(responseResult.error)
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     const items1: MenuProps['items'] = [
         {
@@ -33,7 +50,7 @@ export default function RootLayout({
         },
         {
             key: 'logout',
-            label: <Link href='/login'>Выйти</Link>
+            label: <Link onClick={onLogout} href='/login'>Выйти</Link>
         }
     ]
     const {

@@ -1,7 +1,7 @@
 
 'use client'
-import React, { useEffect, useState } from 'react'
-import { isAuthorizedRequest, loginRequest } from '../../../api/requests';
+import React, { useState } from 'react'
+import { loginRequest } from '../../../api/requests';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 

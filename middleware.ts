@@ -65,13 +65,15 @@ console.log("isAuthorizedResponce", isAuthorizedResponce);
 
   // If the user is authenticated, continue as normal
   if (isAuthorized) {
+    console.log("isAuthorized");
     return NextResponse.next();
   }
 
   // Redirect to login page if not authenticated
+  console.log("to login");
   return NextResponse.redirect(new URL("/login", request.url));
 }
 
 export const config = {
-  matcher: ["/todos", "/aims", "/events", "/planning", "/main"],
+  matcher: ["/todos", "/aims", "/api/aims", "/events", "/planning", "/main"],
 };

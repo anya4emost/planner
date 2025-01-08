@@ -1,3 +1,6 @@
 .task-heading {
     display: flex;
 }
+.task-string {
+    display: flex;
+}
