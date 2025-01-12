@@ -43,6 +43,10 @@ export default function RootLayout({
 
   const items1: MenuProps['items'] = [
     {
+      key: 'tasks',
+      label: <Link href='/tasks'>Мои Задачи</Link>
+    },
+    {
       key: 'todos',
       label: <Link href='/todos'>Задачи</Link>
     },

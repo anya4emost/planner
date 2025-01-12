@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 import { tasksRequest } from '../../../api/requests';
 import { CreateTaskModal } from './_ui/modals/createTaskModal/createTaskModal';
 
-export default function user() {
+export default function todos() {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [tasks, setTasks] = useState([]);
 
@@ -46,7 +46,9 @@ export default function user() {
 
   return (
     <div>
-      <div className={styles['task-heading']}><h1>ЗАДАЧИ</h1><PlusCircleOutlined onClick={openModal} style={{ fontSize: '24px', color: '#08c', marginLeft: '8px' }} /></div>
+      <div className={styles['task-heading']}><h1>ЗАДАЧИ</h1>
+        <PlusCircleOutlined onClick={openModal} style={{ fontSize: '24px', color: '#08c', marginLeft: '8px' }} />
+      </div>
       <br />
       <ul>
         {tasks.map((task) => {

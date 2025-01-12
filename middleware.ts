@@ -87,5 +87,13 @@ console.log("isAuthorizedResponce", isAuthorizedResponce);
 }
 
 export const config = {
-  matcher: ["/todos", "/aims", "/api/aims", "/events", "/planning", "/main"],
+  matcher: [
+    "/todos",
+    "/tasks",
+    "/aims",
+    "/api/aims",
+    "/events",
+    "/planning",
+    "/main",
+  ],
 };
