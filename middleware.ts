@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
   console.log("in middleware request", request);
   const cookieStore = await cookies();
   let isAuthorized;
+  let newHeadersSetCookie;
 
   // проверяем жизнеспособность access-token
   try {
@@ -15,7 +16,7 @@ console.log("isAuthorizedResponce", isAuthorizedResponce);
     if (isAuthorizedResponce.success) {
       isAuthorized = true;
     }
-
+    
     const accessTokenIsExpired = isAuthorizedResponce.error?.code === 498;
     if (accessTokenIsExpired) {
       try {
@@ -24,31 +25,33 @@ console.log("isAuthorizedResponce", isAuthorizedResponce);
           request.headers
         );
         console.log("request.headers", request.headers.get('cookie'));
+        console.log("headersSetCookie", headersSetCookie);
         console.log("result", result);
         const refreshTokenResultSuccess = result.success && headersSetCookie;
         if (refreshTokenResultSuccess) {
           const {
             accessTokenValue,
             accessTokenPath,
-            accessTokenSameSite,
             refreshTokenValue,
             refreshTokenPath,
-            refreshTokenSameSite,
           } = parseHeadersSetCookie(headersSetCookie);
 
           cookieStore.set({
             name: "access-token",
             value: accessTokenValue,
             path: accessTokenPath,
-            sameSite: accessTokenSameSite,
+            sameSite: "lax",
+            httpOnly: true,
           });
           cookieStore.set({
             name: "refresh-token",
             value: refreshTokenValue,
             path: refreshTokenPath,
-            sameSite: refreshTokenSameSite,
+            sameSite: "lax",
+            httpOnly: true,
           });
           isAuthorized = true;
+          newHeadersSetCookie = headersSetCookie;
         } else {
           isAuthorized = false;
         }
@@ -66,6 +69,15 @@ console.log("isAuthorizedResponce", isAuthorizedResponce);
   // If the user is authenticated, continue as normal
   if (isAuthorized) {
     console.log("isAuthorized");
+    // если сделан рефреш токена, то нужно в текущий запрос подставить новые токены
+    if (newHeadersSetCookie) {
+      return NextResponse.redirect(request.nextUrl, {
+        headers: {
+          "Set-Cookie": newHeadersSetCookie,
+        },
+      });
+    }
+      
     return NextResponse.next();
   }
 

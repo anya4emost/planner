@@ -1,12 +1,8 @@
 'use client';
-import { MenuProps } from "antd";
 import { Menu as SiderMenu } from "../ui/menu";
 import styles from "./layout.module.css";
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import Link from "next/link";
+import { Breadcrumb, Layout, theme } from 'antd';
 import { Suspense, useEffect, useState } from "react";
-import { logoutRequest } from "../../api/requests";
-import { useRouter } from "next/navigation";
 const { Header, Content, Sider } = Layout;
 
 export default function RootLayout({
@@ -14,55 +10,10 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const router = useRouter();
-
-    // const onClick: MenuProps['onClick'] = () => {
-    //     console.log('click ');
-    // };
-
-    // const items1: MenuProps['items'] = ['Задачи', 'Цели', 'Войти', 'Выйти'].map((key) => ({
-    //     key,
-    //     label: <Link href='/aims'>{key}</Link>
-    // }));
-
-    const onLogout = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        try {
-            const responseResult = await logoutRequest();
-            if (responseResult.success) {
-                router.push('/login');
-            } else {
-                throw new Error(responseResult.error)
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    const items1: MenuProps['items'] = [
-        {
-            key: 'todos',
-            label: <Link href='/todos'>Задачи</Link>
-        },
-        {
-            key: 'aims',
-            label: <Link href='/aims'>Цели</Link>
-        },
-        {
-            key: 'logout',
-            label: <Link onClick={onLogout} href='/login'>Выйти</Link>
-        }
-    ]
+        
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-
-    const menuOnClick = (e) => {
-        if (e.key === 'Цели') {
-
-        }
-        console.log('menuOnClick', e);
-    }
 
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
@@ -71,46 +22,29 @@ export default function RootLayout({
     if (!isMounted) return null;
 
     return (
-        <html lang="en">
-            <body>
-                <Suspense fallback={<p>Loading feed...</p>}>
-                    <Layout>
-                        <Header style={{ display: 'flex', alignItems: 'center' }}>
-                            <div className="demo-logo" />
-                            <Menu
-                                onClick={menuOnClick}
-                                theme="dark"
-                                mode="horizontal"
-                                defaultSelectedKeys={['2']}
-                                items={items1}
-                                style={{ flex: 1, minWidth: 0, justifyContent: 'flex-end' }}
-                            />
-                        </Header>
-                        <Layout>
-                            <Sider width={256} style={{ background: colorBgContainer }}>
-                                <SiderMenu />
-                            </Sider>
-                            <Layout style={{ padding: '0' }}>
-                                {/* <Breadcrumb
+        <Suspense fallback={<p>Loading feed...</p>}>
+            <Layout>
+                <Sider width={256} style={{ background: colorBgContainer }}>
+                    <SiderMenu />
+                </Sider>
+                <Layout style={{ padding: '0' }}>
+                    {/* <Breadcrumb
                                 items={[{ title: 'Home' }, { title: 'List' }, { title: 'App' }]}
                                 style={{ margin: '16px 0' }}
                             /> */}
-                                <Content
-                                    style={{
-                                        padding: 24,
-                                        margin: 0,
-                                        minHeight: 280,
-                                        background: colorBgContainer,
-                                        //borderRadius: borderRadiusLG,
-                                    }}
-                                >
-                                    {children}
-                                </Content>
-                            </Layout>
-                        </Layout>
-                    </Layout>
-                </Suspense>
-            </body>
-        </html>
+                    <Content
+                        style={{
+                            padding: 24,
+                            margin: 0,
+                            minHeight: 280,
+                            background: colorBgContainer,
+                            //borderRadius: borderRadiusLG,
+                        }}
+                    >
+                        {children}
+                    </Content>
+                </Layout>
+            </Layout>
+        </Suspense>
     );
 }
