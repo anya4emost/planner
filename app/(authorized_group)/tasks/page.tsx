@@ -38,6 +38,7 @@ export default function tasks() {
     return (
         <div>
             <h1>Мои Задачи</h1>
+            <h5>загрузка списка задач осуществляется на сервере</h5>
             <CreateTaskComponent />
             <Tasks />
         </div>
