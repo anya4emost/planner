@@ -1,0 +1,10 @@
+.day-switcher{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index:10;
+    background-color: white;
+    padding: 4px 0;
+}

@@ -105,7 +105,7 @@ export const CreateTaskModal: React.FC<ICreateTaskModal> = ({ open, onOk, onCanc
                             id="description"
                             rows={4}
                             placeholder=""
-                            maxLength={6}
+                            maxLength={300}
                             value={description}
                         />
                     </div>

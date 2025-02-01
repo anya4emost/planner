@@ -1,0 +1,52 @@
+.row{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.time{
+    margin-bottom: -9px;
+}
+.time-cell{
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    font-size: 12px;
+}
+
+.tasks-cell{
+    display: flex;
+    align-items: end;
+    justify-content: start;
+    border-bottom: 1px solid #d2d2d2;
+    font-size: 12px;
+}
+
+.tasks-cell.over{
+    background-color:yellow;
+}
+.day-container{
+    display: flex;
+}
+.left-column{
+    display: flex;
+    flex-direction: column;
+     background-color:antiquewhite;
+
+    min-width: 40px;
+    min-height: 100%;
+}
+.right-column{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-grow: 1;
+     background-color:aliceblue;
+}
+
+.red-line{
+    position:absolute;
+    min-height: 1px;
+    min-width: 100%;
+    background-color: red;
+}

@@ -29,7 +29,7 @@ export default function login() {
                 throw new Error(requestResult.error.message);
             }
             if (requestResult.success) {
-                router.push('/todos');
+                router.push('/tasks');
             }
         } catch (error) {
             console.error(error);

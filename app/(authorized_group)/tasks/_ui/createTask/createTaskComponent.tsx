@@ -2,9 +2,11 @@
 
 import { PlusCircleOutlined } from '@ant-design/icons'
 import React, { useState } from 'react'
-import { CreateTaskModal } from '../../../todos/_ui/modals/createTaskModal/createTaskModal';
+import { CreateTaskModal } from '../modals/createTaskModal/createTaskModal';
+import { useRouter } from 'next/navigation'
 
 export default function CreateTaskComponent() {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     console.log('isModalOpen', isModalOpen);
     const openModal = () => {
@@ -14,6 +16,7 @@ export default function CreateTaskComponent() {
 
     const onSuccessCreateTask = async () => {
         console.log('revalidate tasks');
+        router.refresh();
     }
 
     const handleOk = () => {

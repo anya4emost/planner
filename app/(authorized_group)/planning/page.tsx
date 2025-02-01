@@ -1,21 +1,20 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
 import styles from "./page.module.css";
-import { useRouter } from 'next/navigation'
 import { tasksRequest } from '../../../api/requests';
+import { Splitter } from 'antd';
+import DayTracker from '../../../components/ui/daytracker/DayTracker';
+import DaySwitcherContainer from '../../../containers/DaySwitcherContainer';
+import DragableRowTask from '../../../components/ui/dragableRowTask/DragableRowTask';
+import SplitterWrapper from '../../../components/ui/splitterWrapper/SplitterWrapper';
+import CreateTaskComponent from '../tasks/_ui/createTask/createTaskComponent';
 
 export default function user() {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log('planning rerender');
   const [tasks, setTasks] = useState([])
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
 
-  useEffect( () => {
+  useEffect(() => {
     
     async function fetchData() {
       try {
@@ -30,54 +29,35 @@ export default function user() {
     }
     fetchData();
 
-  }, [])
-
-
-  
-
-  const handleOk = () => {
-    console.log('сохранились');
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  }, []);
 
   return (
     <div>
-      <div className={styles['task-heading']}><h1>ПЛАНИРОВАНИЕ</h1><PlusCircleOutlined onClick={openModal} style={{ fontSize: '24px', color: '#08c', marginLeft: '8px' }} /></div>
-     
+      <div className={styles['task-heading']}>
+        <h1>ПЛАНИРОВАНИЕ</h1>
+        <CreateTaskComponent />
+      </div>
+      <Splitter style={{ height: 600, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+        <Splitter.Panel defaultSize="40%" min="280" max="70%">
+          <SplitterWrapper>
+            <DaySwitcherContainer />
+            <DayTracker />
+          </SplitterWrapper>
+        </Splitter.Panel>
+        <Splitter.Panel>
+          <SplitterWrapper>
+            <>
+            {tasks.map((task) => {
+              return (
+                <DragableRowTask task={task}/>
+              )
+            })}
+            </>
+          </SplitterWrapper>
+        </Splitter.Panel>
+      </Splitter>
       <br />
-      {tasks.map((task) => {
-        return (
-          <h3 key={task.id}> {task.id}. {task.description}</h3>
-        )
-      })}
-
-      <Modal title="Создать задачу" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <form action="" method="post">
-          <label htmlFor="task-name">
-            Название:
-            <input id="task-name" type="text" name="name"/>
-          </label>
-          <label htmlFor="description">
-            Описание:
-            <textarea id="description"/>
-          </label>
-          <label htmlFor="icon">
-            Иконка:
-            <select name="city" id="icon">
-              <option value="">-- Выберите город --</option>
-              <option value="petersburg">Санкт-Петербург</option>
-              <option value="samara">Самара</option>
-              <option value="perm">Пермь</option>
-              <option value="novosibirsk">Новосибирск</option>
-            </select>
-          </label>
-          <button type="submit">Сохранить</button>
-        </form>
-      </Modal>
+  
     </div>
   )
 }

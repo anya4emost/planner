@@ -47,10 +47,6 @@ export default function RootLayout({
       label: <Link href='/tasks'>Мои Задачи</Link>
     },
     {
-      key: 'todos',
-      label: <Link href='/todos'>Задачи</Link>
-    },
-    {
       key: 'aims',
       label: <Link href='/aims'>Цели</Link>
     },

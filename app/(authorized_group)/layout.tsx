@@ -1,7 +1,8 @@
 'use client';
-import { Menu as SiderMenu } from "../ui/menu";
+import { Menu as SiderMenu } from "../../components/ui/sidebar/menu";
+import SplitterWrapper from "../../components/ui/splitterWrapper/SplitterWrapper";
 import styles from "./layout.module.css";
-import { Breadcrumb, Layout, theme } from 'antd';
+import { Breadcrumb, Layout, Splitter, theme } from 'antd';
 import { Suspense, useEffect, useState } from "react";
 const { Header, Content, Sider } = Layout;
 
@@ -24,10 +25,17 @@ export default function RootLayout({
     return (
         <Suspense fallback={<p>Loading feed...</p>}>
             <Layout>
-                <Sider width={256} style={{ background: colorBgContainer }}>
-                    <SiderMenu />
-                </Sider>
-                <Layout style={{ padding: '0' }}>
+                <Splitter style={{ height: '100%' }}>
+                    <Splitter.Panel collapsible defaultSize="256" min="52" max="256">
+                        <SplitterWrapper>
+                            <Sider width={256} style={{ background: colorBgContainer }}>
+                                <SiderMenu />
+                            </Sider>
+                        </SplitterWrapper>
+                    </Splitter.Panel>
+                    <Splitter.Panel>
+                        <SplitterWrapper>
+                            <Layout style={{ padding: '0' }}>
                     {/* <Breadcrumb
                                 items={[{ title: 'Home' }, { title: 'List' }, { title: 'App' }]}
                                 style={{ margin: '16px 0' }}
@@ -44,6 +52,9 @@ export default function RootLayout({
                         {children}
                     </Content>
                 </Layout>
+                        </SplitterWrapper>
+                    </Splitter.Panel>
+                </Splitter>
             </Layout>
         </Suspense>
     );

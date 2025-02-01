@@ -16,7 +16,7 @@ const items: MenuItem[] = [
     },
     {
         key: 'tasks',
-        label: <Link href='/todos'>Список задач</Link>,
+        label: <Link href='/tasks'>Список задач</Link>,
         icon: <UnorderedListOutlined />,
     },
     {
