@@ -4,35 +4,24 @@ import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import styles from "./page.module.css";
-import { useRouter } from 'next/navigation'
-import { tasksRequest } from '../../../api/requests';
+import { useTaskStore } from '../../../store/store';
 
-export default function user() {
-  const router = useRouter();
+export default function events() {
+  //const router = useRouter();
+  const tasks = useTaskStore().tasks;
+  const loading = useTaskStore().loaing;
+  const fetchAllTasks = useTaskStore().fetchAllTasks;
+  console.log('tasks', tasks);
+  console.log('loading', loading);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([])
+  //const [tasks, setTasks] = useState([])
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   useEffect( () => {
-    
-    async function fetchData() {
-      try {
-        let requestResult = await tasksRequest();
-        if (requestResult.error) {
-          throw new Error(requestResult.error.message);
-        }
-        setTasks(requestResult.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
-
+    fetchAllTasks();
   }, [])
-
-
   
 
   const handleOk = () => {
@@ -43,6 +32,12 @@ export default function user() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  if (loading) {
+    return (
+      <div>Loading...</div>
+    )
+  }
 
   return (
     <div>
